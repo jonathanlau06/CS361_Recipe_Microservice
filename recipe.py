@@ -46,22 +46,28 @@ while True:
             for i in recipes:
                 ingredients = recipes[i]["ingredients"]
                 remainder = len(service_text)
-                used = []
+                used_ingredient = []
+                used_recipe = []
                 if num_found == 10:
                     break
                 for j in service_text:
+                    if num_found == 10:
+                        break
                     for k in recipes[i]["ingredients"]:
                         if j in k.lower():
-                            if j not in used:
-                                used.append(j)
+                            if j not in used_ingredient:
+                                used_ingredient.append(j)
                                 remainder -= 1
-                            if remainder == 0:
+                            if remainder == 0 and recipes[i]["title"] not in used_recipe:
                                 found = True
                                 num_found += 1
                                 service_file.write(str(num_found) + "\n")
                                 service_file.write(recipes[i]["title"] + "\n")
+                                used_recipe.append(recipes[i]["title"])
                                 service_file.write(str(recipes[i]["ingredients"]) + "\n")
                                 service_file.write(recipes[i]["instructions"] + "\n")
+                            if num_found == 10:
+                                break
             if found is False:
                 service_file.write("Recipe Not Found")
             service_file.close()
